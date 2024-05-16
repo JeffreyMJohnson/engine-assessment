@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import styles from '@/app/components/ContentCard/ContentCard.module.css'
+import styles from './ContentCard.module.css';
 
 interface ContentCardProps {
   content: {
@@ -14,7 +14,7 @@ interface ContentCardProps {
 
 const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
   return (
-    <div className={styles["content-card"]}>
+    <div className={styles["content-card"]} data-testid={"content-card" + content.id}>
       <h2>{content.title}</h2>
       <h3>{content.subTitle}</h3>
       <p>{content.body}</p>

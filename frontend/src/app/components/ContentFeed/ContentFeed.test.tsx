@@ -1,53 +1,40 @@
-import React from 'react';
-import { render, waitFor } from '@testing-library/react';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-import ContentFeed from './ContentFeed';
-
-// Mock the axios instance
-const mock = new MockAdapter(axios);
+import { render, screen } from '@testing-library/react';
+import ContentFeed, { Content } from "./ContentFeed";
 
 describe('ContentFeed', () => {
-  it('renders content feed with fetched data', async () => {
-    // Arrange
-    const mockData = [
-      { id: '1', title: 'Title 1', subTitle: 'Subtitle 1', body: 'Body text 1' },
-      { id: '2', title: 'Title 2', subTitle: 'Subtitle 2', body: 'Body text 2' },
-    ];
-
-    mock.onGet('/api/content').reply(200, mockData);
-
-    // Act
-    const { getByText } = render(<ContentFeed />);
-
-    // Assert
-    await waitFor(() => {
-      mockData.forEach((content) => {
-        expect(getByText(content.title)).toBeInTheDocument();
-        expect(getByText(content.subTitle)).toBeInTheDocument();
-        expect(getByText(content.body)).toBeInTheDocument();
-      });
+    it('renders without crashing', () => {
+      render(<ContentFeed />);
+    });
+  
+    it('displays "Loading..." when loading', () => {
+      render(<ContentFeed />);
+      const loadingElement = screen.getByText(/Loading.../i);
+      expect(loadingElement).toBeInTheDocument();
+    });
+  
+    it('displays error message when there is an error', () => {
+      render(<ContentFeed />);
+      const errorElement = screen.getByText(/Failed to fetch content/i);
+      expect(errorElement).toBeInTheDocument();
+    });
+    const mockContent: Content[] = [
+        {
+          id: '1',
+          title: 'Content 1',
+          subTitle: 'Sub Title 1',
+          body: 'This is the body of the first piece of content',
+        },
+        {
+          id: '2',
+          title: 'Content 2',
+          subTitle: 'Sub Title 2',
+          body: 'This is the body of the second piece of content',
+        },
+        // Add more content objects as needed
+      ];
+    it('renders ContentCard for each content', () => {
+      render(<ContentFeed />);
+      const contentCards = screen.getAllByTestId('content-card');
+      expect(contentCards.length).toBe(mockContent.length);
     });
   });
-
-  it('renders loading state initially', () => {
-    // Act
-    const { getByText } = render(<ContentFeed />);
-
-    // Assert
-    expect(getByText('Loading...')).toBeInTheDocument();
-  });
-
-  it('renders error message on fetch failure', async () => {
-    // Arrange
-    mock.onGet('/api/content').reply(500);
-
-    // Act
-    const { getByText } = render(<ContentFeed />);
-
-    // Assert
-    await waitFor(() => {
-      expect(getByText('Failed to fetch data')).toBeInTheDocument();
-    });
-  });
-});

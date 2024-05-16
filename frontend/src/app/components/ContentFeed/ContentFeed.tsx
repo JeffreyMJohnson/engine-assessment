@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ContentCard from '../ContentCard/ContentCard';
-import styles from '@/app/components/ContentFeed/ContentFeed.module.css';
+import styles from './ContentFeed.module.css';
 
 
-interface Content {
+export type Content = {
   id: string;
   title: string;
   subTitle: string;
@@ -40,7 +40,7 @@ const ContentFeed: React.FC = () => {
   return (
     <div className={styles["content-feed"]}>
       {contentData.map((content) => (
-        <ContentCard key={content.id} content={content} />
+        <ContentCard key={content.id} content={content}/>
       ))}
     </div>
   );
