@@ -1,9 +1,8 @@
 import request from 'supertest';
 import express from 'express';
 import axios from 'axios';
-import { processData } from '../services/dataService';
+import { processData, Content } from '../services/dataService';
 import { mocked } from 'jest-mock';
-
 
 jest.mock('axios');
 jest.mock('../services/dataService');
@@ -24,8 +23,56 @@ app.get('/api/content', async (req, res) => {
 
 describe('GET /api/content', () => {
   it('should fetch and process data successfully', async () => {
-    const mockData = { data: 'mockData' };
-    const processedData = 'processedData';
+    const mockData = {
+      data: {
+        contentCards: [
+          {
+            id: '1',
+            imageUri: 'https://example.com/image.jpg',
+            textData: {
+              title: 'Title',
+              subTitle: 'Subtitle',
+              body: 'Body',
+              author: {
+                first: 'John',
+                last: 'Doe'
+              }
+            },
+            metadata: {
+              priority: 1,
+              publishDate: '2022-01-01'
+            },
+            comments: [
+              {
+                text: 'Comment',
+                author: 'Commenter',
+                profilePic: 'https://example.com/profile.jpg',
+                likes: 10
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    const processedData: Content[] = [
+      {
+        id: '1',
+        title: 'Title',
+        subTitle: 'Subtitle',
+        body: 'Body',
+        author: 'John Doe',
+        imageUri: 'https://example.com/image.jpg',
+        comments: [
+          {
+            text: 'Comment',
+            author: 'Commenter',
+            profilePic: 'https://example.com/profile.jpg',
+            likes: 10
+          }
+        ]
+      }
+    ];
 
     mocked(axios.get).mockResolvedValueOnce(mockData as any);
     mocked(processData).mockReturnValueOnce(processedData);
@@ -33,7 +80,7 @@ describe('GET /api/content', () => {
     const res = await request(app).get('/api/content');
 
     expect(res.status).toBe(200);
-    expect(res.body).toBe(processedData);
+    expect(res.body).toEqual(processedData);
     expect(axios.get).toHaveBeenCalledWith('https://stoplight.io/mocks/engine/fullstack-spec/52502230/content');
     expect(processData).toHaveBeenCalledWith(mockData.data);
   });

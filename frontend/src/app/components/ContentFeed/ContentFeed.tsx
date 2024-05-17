@@ -1,46 +1,35 @@
-'use client'
+import React from 'react';
 
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import ContentCard from '../ContentCard/ContentCard';
 import styles from './ContentFeed.module.css';
-
+import ContentCard from '../ContentCard/ContentCard';
 
 export type Content = {
   id: string;
   title: string;
   subTitle: string;
   body: string;
-}
+  author: string;
+  imageUri: string;
+  comments: {
+    text: string;
+    author: string;
+    profilePic: string;
+    likes: number;
+  }[];
+};
 
-const ContentFeed: React.FC = () => {
-  const [contentData, setContentData]  = useState<Content[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+export type ContentFeedProps = {
+  contentData: Content[];
+  error?: string | null;
+};
 
-  useEffect(() => {
-    
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/content');
-        setContentData(response.data);
-      } catch (error) {
-        setError('Failed to fetch content');
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    fetchData();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if(error) return <div>{error}</div>;
+const ContentFeed: React.FC<ContentFeedProps> = ({ contentData = [], error }) => {
+  if (error) return <div>{error}</div>;
 
   return (
     <div className={styles["content-feed"]}>
       {contentData.map((content) => (
-        <ContentCard key={content.id} content={content}/>
+        <ContentCard key={content.id} content={content} />
       ))}
     </div>
   );

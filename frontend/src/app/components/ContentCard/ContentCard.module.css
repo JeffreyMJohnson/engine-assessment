@@ -18,3 +18,9 @@
 .content-card p {
   margin-bottom: 0;
 }
+
+.content-image {
+  width: 100%; /* Full width */
+  height: 500px; /* Fixed height */
+  object-fit: cover; /* This ensures the image covers the area without distortion */
+}

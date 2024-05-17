@@ -7,6 +7,16 @@ const mockContent: ContentCardProps['content'] = {
   title: 'Test Title',
   subTitle: 'Test Subtitle',
   body: 'Test body content',
+  author: 'John Doe',
+  imageUri: 'https://example.com/image.jpg',
+  comments: [
+    {
+      text: 'Test comment',
+      author: 'Commenter',
+      profilePic: 'https://example.com/profile.jpg',
+      likes: 5
+    }
+  ]
 };
 
 describe('ContentCard', () => {
@@ -26,6 +36,22 @@ describe('ContentCard', () => {
     render(<ContentCard content={mockContent} />);
     const bodyElement = screen.getByText(/Test body content/i);
     expect(bodyElement).toBeInTheDocument();
+  });
+
+  it('renders the content card with correct author', () => {
+    render(<ContentCard content={mockContent} />);
+    const authorElement = screen.getByText(/Author: John Doe/i);
+    expect(authorElement).toBeInTheDocument();
+  });
+
+  it('renders the content card with correct comments', () => {
+    render(<ContentCard content={mockContent} />);
+    const commentTextElement = screen.getByText(/Test comment/i);
+    const commentAuthorElement = screen.getByText(/@Commenter/i);
+    const commentLikesElement = screen.getByText(/Likes: 5/i);
+    expect(commentTextElement).toBeInTheDocument();
+    expect(commentAuthorElement).toBeInTheDocument();
+    expect(commentLikesElement).toBeInTheDocument();
   });
 
   it('applies the correct CSS class', () => {

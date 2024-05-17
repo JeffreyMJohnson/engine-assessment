@@ -17,8 +17,10 @@ describe('processData', () => {
                             last: 'Doe'
                         }
                     },
-                    priority: 1,
-                    publishDate: '2022-01-01',
+                    metadata: {
+                        priority: 1,
+                        publishDate: '2022-01-01'
+                    },
                     comments: [
                         {
                             text: 'Comment',
@@ -40,7 +42,17 @@ describe('processData', () => {
                 id: '1',
                 title: 'Title',
                 subTitle: 'Subtitle',
-                body: 'Body'
+                body: 'Body',
+                author: 'John Doe',
+                imageUri: 'https://example.com/image.jpg',
+                comments: [
+                    {
+                        text: 'Comment',
+                        author: 'Commenter',
+                        profilePic: 'https://example.com/profile.jpg',
+                        likes: 10
+                    }
+                ]
             }
         ]);
     });
@@ -85,7 +97,10 @@ describe('processData', () => {
                 id: '1',
                 title: 'Title',
                 subTitle: 'Subtitle',
-                body: 'Body'
+                body: 'Body',
+                author: 'John Doe',
+                imageUri: undefined,
+                comments: []
             }
         ]);
     });
