@@ -24,21 +24,25 @@ const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
   return (
     <div className={styles["content-card"]} data-testid="content-card">
       <img src={content.imageUri} alt={`${content.title}`} className={styles["content-image"]} />
-      <h2>{content.title}</h2>
-      <h3>{content.subTitle}</h3>
-      <p>{content.body}</p>
-      <div className={styles["content-author"]}>Author: {content.author}</div>
-      <div className={styles["content-comments"]}>
-        {content.comments.map((comment, index) => (
-          <div key={index} className={styles["comment"]}>
-            <img src={comment.profilePic} alt={comment.author} className={styles["comment-profile-pic"]} />
-            <div>
-              <p className={styles["comment-author"]}>@{comment.author}</p>
-              <p>{comment.text}</p>
-              <p className={styles["comment-likes"]}>Likes: {comment.likes}</p>
+      <div className={styles["content-details"]}>
+        <div className={styles["content-header"]}>
+          <h2 className={styles["content-title"]}>{content.title}</h2>
+          <p className={styles["content-author"]}>Author: {content.author}</p>
+        </div>
+        <h3 className={styles["content-subtitle"]}>{content.subTitle}</h3>
+        <p className={styles["content-body"]}>{content.body}</p>
+        <div className={styles["content-comments"]}>
+          {comments.map((comment, index) => (
+            <div key={index} className={styles["comment"]}>
+              <img src={comment.profilePic} alt={comment.author} className={styles["comment-profile-pic"]} />
+              <div>
+                <p className={styles["comment-author"]}>@{comment.author}</p>
+                <p>{comment.text}</p>
+                <p className={styles["comment-likes"]}>Likes: {comment.likes}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
