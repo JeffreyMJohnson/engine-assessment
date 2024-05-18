@@ -1,4 +1,5 @@
-import React from 'react';
+"use client"
+import React, { useState } from 'react';
 import styles from './ContentCard.module.css';
 
 export type ContentCardProps = {
@@ -18,8 +19,16 @@ export type ContentCardProps = {
   };
 }
 
+const contentBodyMaxLength = 170;
+
 const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
   const { comments = [] } = content; // Default comments to an empty array if undefined
+  const [isExpanded, setIsExpanded] = useState(false);
+  const truncatedBody = content.body.length > contentBodyMaxLength ? content.body.substring(0, contentBodyMaxLength) + '...' : content.body;
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   return (
     <div className={styles["content-card"]} data-testid="content-card">
@@ -30,7 +39,14 @@ const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
           <p className={styles["content-author"]}>Author: {content.author}</p>
         </div>
         <h3 className={styles["content-subtitle"]}>{content.subTitle}</h3>
-        <p className={styles["content-body"]}>{content.body}</p>
+        <p className={styles["content-body"]}>
+          {isExpanded ? content.body : truncatedBody}
+        </p>
+        {content.body.length > 300 && (
+          <button onClick={toggleExpanded} className={styles["read-more-btn"]}>
+            {isExpanded ? "Show Less" : "Read More"}
+          </button>
+        )}
         <div className={styles["content-comments"]}>
           {comments.map((comment, index) => (
             <div key={index} className={styles["comment"]}>
