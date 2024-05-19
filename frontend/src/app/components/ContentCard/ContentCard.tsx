@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
 import styles from './ContentCard.module.css';
 
@@ -17,17 +17,22 @@ export type ContentCardProps = {
       likes: number;
     }[];
   };
-}
+};
 
 const contentBodyMaxLength = 170;
 
 const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
   const { comments = [] } = content; // Default comments to an empty array if undefined
   const [isExpanded, setIsExpanded] = useState(false);
+  const [commentsExpanded, setCommentsExpanded] = useState(false);
   const truncatedBody = content.body.length > contentBodyMaxLength ? content.body.substring(0, contentBodyMaxLength) + '...' : content.body;
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const toggleCommentsExpanded = () => {
+    setCommentsExpanded(!commentsExpanded);
   };
 
   return (
@@ -48,7 +53,10 @@ const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
           </button>
         )}
         <div className={styles["content-comments"]}>
-          {comments.map((comment, index) => (
+          <button onClick={toggleCommentsExpanded} className={styles["read-more-btn"]}>
+            {commentsExpanded ? "Hide Comments" : `Show Comments (${comments.length})`}
+          </button>
+          {commentsExpanded && comments.map((comment, index) => (
             <div key={index} className={styles["comment"]}>
               <img src={comment.profilePic} alt={comment.author} className={styles["comment-profile-pic"]} />
               <div>

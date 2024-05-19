@@ -13,10 +13,10 @@
 }
 
 .content-image {
-  width: 100%;
-  height: auto;
-  max-height: 300px;
+  width: calc(100% - 20px); /* Adjust width to account for left and right margins */
+  height: 300px;
   object-fit: cover;
+  margin: 10px 10px 0 10px; /* Add margins to top, left, and right */
 }
 
 .content-details {
@@ -69,6 +69,10 @@
   display: flex;
   align-items: center;
   margin-top: 5px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
 .comment-profile-pic {
@@ -80,9 +84,11 @@
 
 .comment-author {
   font-weight: bold;
+  margin-right: 5px;
 }
 
 .comment-likes {
   font-size: 0.9em;
   color: #555;
+  margin-left: auto;
 }
