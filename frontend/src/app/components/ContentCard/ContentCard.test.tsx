@@ -44,14 +44,60 @@ describe('ContentCard', () => {
     expect(authorElement).toBeInTheDocument();
   });
 
+  it('renders comments collapsed initially', () => {
+    render(<ContentCard content={mockContent} />);
+    
+    // Verify comments are initially hidden
+    expect(screen.queryByText(/Test comment/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/@Commenter/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Likes: 5/i)).not.toBeInTheDocument();
+  });
+
+  it('expands comments when "Show Comments" button is clicked', () => {
+    render(<ContentCard content={mockContent} />);
+
+    // Simulate clicking on the "Show Comments" button
+    const showCommentsButton = screen.getByText(/Show Comments/i);
+    fireEvent.click(showCommentsButton);
+
+    // Verify comments are now visible
+    expect(screen.getByText(/Test comment/i)).toBeInTheDocument();
+    expect(screen.getByText(/@Commenter/i)).toBeInTheDocument();
+    expect(screen.getByText(/Likes: 5/i)).toBeInTheDocument();
+  });
+
   it('renders the content card with correct comments', () => {
     render(<ContentCard content={mockContent} />);
+
+    // Simulate clicking on the "Show Comments" button
+    const showCommentsButton = screen.getByText(/Show Comments/i);
+    fireEvent.click(showCommentsButton);
+    
     const commentTextElement = screen.getByText(/Test comment/i);
     const commentAuthorElement = screen.getByText(/@Commenter/i);
     const commentLikesElement = screen.getByText(/Likes: 5/i);
     expect(commentTextElement).toBeInTheDocument();
     expect(commentAuthorElement).toBeInTheDocument();
     expect(commentLikesElement).toBeInTheDocument();
+  });
+
+  it('collapses comments when "Hide Comments" button is clicked', () => {
+    render(<ContentCard content={mockContent} />);
+
+    // Simulate clicking on the "Show Comments" button
+    const showCommentsButton = screen.getByText(/Show Comments/i);
+    fireEvent.click(showCommentsButton);
+
+    // Verify comments are now visible
+    expect(screen.getByText(/Test comment/i)).toBeInTheDocument();
+
+    // Simulate clicking on the "Hide Comments" button
+    fireEvent.click(showCommentsButton);
+
+    // Verify comments are now hidden again
+    expect(screen.queryByText(/Test comment/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/@Commenter/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Likes: 5/i)).not.toBeInTheDocument();
   });
 
   it('applies the correct CSS class', () => {
