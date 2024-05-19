@@ -43,7 +43,7 @@
 }
 
 .content-subtitle {
-  margin: 0.5em 0;
+  margin: 2px 0 0 0; /* Minimal margin to bring subtitle closer to title */
   font-size: 1em;
   color: #666;
 }
