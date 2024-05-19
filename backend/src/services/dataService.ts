@@ -13,7 +13,7 @@
     };
     metadata: {
       priority: number;
-      publishDate: string;
+      publishDate: string;  
     };
     comments: {
       text: string;
@@ -31,6 +31,7 @@
     body: string;
     author: string;
     imageUri: string;
+    priority: number; 
     comments: {
       text: string;
       author: string;
@@ -47,12 +48,14 @@
       body: item.textData.body,
       author: `${item.textData.author.first} ${item.textData.author.last}`,
       imageUri: item.imageUri,
+      priority: item.metadata?.priority || 0,
       comments: item.comments.map((comment: any) => ({
         text: comment.text,
         author: comment.author,
         profilePic: comment.profilePic,
         likes: comment.likes
       }))
-    }));
+    }))
+    .sort((a: { priority: number; }, b: { priority: number; }) => b.priority - a.priority);
   };
   

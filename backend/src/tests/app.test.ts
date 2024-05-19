@@ -63,6 +63,7 @@ describe('GET /api/content', () => {
         body: 'Body',
         author: 'John Doe',
         imageUri: 'https://example.com/image.jpg',
+        priority: 1,
         comments: [
           {
             text: 'Comment',
