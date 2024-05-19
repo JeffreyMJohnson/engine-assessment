@@ -50,6 +50,18 @@
 
 .content-body {
   margin: 0.5em 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  line-height: 1.5; /* Adjust line-height to suit design */
+  max-height: calc(1.5em * 3); /* 3 lines */
+  transition: max-height 0.3s ease; /* Add transition for smooth animation */
+}
+
+.content-body.expanded {
+  -webkit-line-clamp: unset;
+  max-height: none;
 }
 
 .read-more-btn {

@@ -44,10 +44,10 @@ const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
           <p className={styles["content-author"]}>Author: {content.author}</p>
         </div>
         <h3 className={styles["content-subtitle"]}>{content.subTitle}</h3>
-        <p className={styles["content-body"]}>
+        <p className={`${styles["content-body"]} ${isExpanded ? styles.expanded : ''}`}>
           {isExpanded ? content.body : truncatedBody}
         </p>
-        {content.body.length > 300 && (
+        {content.body.length > contentBodyMaxLength && (
           <button onClick={toggleExpanded} className={styles["read-more-btn"]}>
             {isExpanded ? "Show Less" : "Read More"}
           </button>
