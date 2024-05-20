@@ -1,11 +1,11 @@
 import request from 'supertest';
 import express from 'express';
 import axios from 'axios';
-import { processData, Content } from '../services/dataService';
+import { processData, Content } from './services/dataService';
 import { mocked } from 'jest-mock';
 
 jest.mock('axios');
-jest.mock('../services/dataService');
+jest.mock('./services/dataService');
 
 const app = express();
 const port = 5000;

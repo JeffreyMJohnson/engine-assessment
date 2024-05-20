@@ -1,4 +1,4 @@
-import { processData } from '../services/dataService';
+import { processData } from './dataService';
 
 describe('processData', () => {
     it('should return the processed data', () => {
