@@ -132,4 +132,25 @@ describe('ContentCard', () => {
     expect(bodyElement.textContent).toContain('...');
     expect(readMoreButton.textContent).toBe('Read More');
   });
+
+  it('applies the "expanded" CSS class when content is expanded', () => {
+    render(<ContentCard content={mockContent} />);
+    const readMoreButton = screen.getByText(/Read More/i);
+    fireEvent.click(readMoreButton);
+    const bodyElement = screen.getByText(/Test body content/i);
+    expect(bodyElement).toHaveClass('expanded');
+  });
+
+  it('does not truncate the content if the body is less than 3 lines', () => {
+    const shortContent: ContentCardProps['content'] = {
+      ...mockContent,
+      body: 'Short body content'
+    };
+    
+    render(<ContentCard content={shortContent} />);
+    const bodyElement = screen.getByText(/Short body content/i);
+    expect(bodyElement.textContent).not.toContain('...');
+    
+    expect(screen.queryByText(/Read More/i)).not.toBeInTheDocument();
+  });
 });
