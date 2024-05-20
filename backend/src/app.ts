@@ -1,18 +1,16 @@
 import express from 'express';
-import axios from 'axios';
 import cors from 'cors';
-import { processData } from './services/dataService';
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import routes from './routes/routes';
 
-const CONTENT_API_URL = 'https://stoplight.io/mocks/engine/fullstack-spec/52502230/content';
+const CONTENT_API_URL = process.env.CONTENT_API_URL || 'https://stoplight.io/mocks/engine/fullstack-spec/52502230/content';
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 app.use(cors());
 
-const port = 5000;
-
-// Extended: https://swagger.io/specification/#infoObject
+// Swagger setup
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
@@ -22,42 +20,19 @@ const swaggerOptions = {
       contact: {
         name: "Jeffrey Johnson"
       },
-      servers: ["http://localhost:5000"]
+      servers: [`http://localhost:${PORT}`]
     }
   },
-  apis: ["src/app.ts"]
+  apis: ["src/routes/routes.ts"]
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-/**
- * @swagger
- * /api/content:
- *  get:
- *    description: Use to request content
- *    responses:
- *      '200':
- *        description: A successful response
- */
-app.get('/api/content', async (req, res) => {
-  try {
-    const response = await axios.get(CONTENT_API_URL,
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Prefer': 'code=200, dynamic=true'
-        }
-      });
-    const rawData = response.data;
-    const processedData = processData(rawData);
-    res.json(processedData);
-  } catch (error) {
-    res.status(500).send('Error fetching data');
-  }
-});
+// Use routes
+app.use('/api/content', routes);
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
