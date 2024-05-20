@@ -10,6 +10,7 @@ export type Content = {
   body: string;
   author: string;
   imageUri: string;
+  priority: number;
   comments: {
     text: string;
     author: string;

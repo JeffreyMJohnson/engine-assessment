@@ -11,6 +11,7 @@ describe('ContentFeed', () => {
       body: 'Test Body 1',
       author: 'Author 1',
       imageUri: 'https://example.com/image1.jpg',
+      priority: 0,
       comments: [
         {
           text: 'Comment 1',
@@ -27,6 +28,7 @@ describe('ContentFeed', () => {
       body: 'Test Body 2',
       author: 'Author 2',
       imageUri: 'https://example.com/image2.jpg',
+      priority: 0,
       comments: [
         {
           text: 'Comment 2',
