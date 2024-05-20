@@ -158,7 +158,7 @@ describe('processData', () => {
         expect(result).toEqual([]);
     });
 
-    it('should handle missing properties in data', () => {
+    it('should filter out malformed data', () => {
         // Arrange
         const data = {
             contentCards: [
@@ -174,6 +174,31 @@ describe('processData', () => {
                         }
                     },
                     comments: []
+                },
+                {
+                    id: '2',
+                    imageUri: 'https://example.com/image2.jpg',
+                    textData: {
+                        title: 'Title 2',
+                        subTitle: 'Subtitle 2',
+                        body: 'Body 2',
+                        author: {
+                            first: 'Jane',
+                            last: 'Smith'
+                        }
+                    },
+                    metadata: {
+                        priority: 3,
+                        publishDate: '2022-01-03'
+                    },
+                    comments: [
+                        {
+                            text: 'Comment 2',
+                            author: 'Commenter 2',
+                            profilePic: 'https://example.com/profile2.jpg',
+                            likes: 30
+                        }
+                    ]
                 }
             ]
         };
@@ -184,14 +209,21 @@ describe('processData', () => {
         // Assert
         expect(result).toEqual([
             {
-                id: '1',
-                title: 'Title',
-                subTitle: 'Subtitle',
-                body: 'Body',
-                author: 'John Doe',
-                imageUri: undefined,
-                priority: 0,
-                comments: []
+                id: '2',
+                title: 'Title 2',
+                subTitle: 'Subtitle 2',
+                body: 'Body 2',
+                author: 'Jane Smith',
+                imageUri: 'https://example.com/image2.jpg',
+                priority: 3,
+                comments: [
+                    {
+                        text: 'Comment 2',
+                        author: 'Commenter 2',
+                        profilePic: 'https://example.com/profile2.jpg',
+                        likes: 30
+                    }
+                ]
             }
         ]);
     });
@@ -199,6 +231,17 @@ describe('processData', () => {
     it('should handle null data', () => {
         // Arrange
         const data = null;
+
+        // Act
+        const result = () => processData(data);
+
+        // Assert
+        expect(result).toThrow(TypeError);
+    });
+
+    it('should throw a TypeError for invalid data format', () => {
+        // Arrange
+        const data = { contentCards: "invalid data" }; // Invalid data format
 
         // Act
         const result = () => processData(data);
