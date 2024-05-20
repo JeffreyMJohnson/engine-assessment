@@ -1,10 +1,11 @@
 import express from 'express';
 import axios from 'axios';
+import cors from 'cors';
 import { processData } from './services/dataService';
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-const cors = require('cors');
+const CONTENT_API_URL = 'https://stoplight.io/mocks/engine/fullstack-spec/52502230/content';
 
 const app = express();
 app.use(cors());
@@ -41,13 +42,13 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  */
 app.get('/api/content', async (req, res) => {
   try {
-    const response = await axios.get('https://stoplight.io/mocks/engine/fullstack-spec/52502230/content',
-    {
-      headers: {
-        'Accept': 'application/json',
-        'Prefer': 'code=200, dynamic=true'
-      }
-    });
+    const response = await axios.get(CONTENT_API_URL,
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Prefer': 'code=200, dynamic=true'
+        }
+      });
     const rawData = response.data;
     const processedData = processData(rawData);
     res.json(processedData);

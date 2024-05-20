@@ -10,6 +10,9 @@ jest.mock('./services/dataService');
 const app = express();
 const port = 5000;
 
+/*
+  This is a mocked out call so it does NOT actually fetch data from the URL.
+*/
 app.get('/api/content', async (req, res) => {
   try {
     const response = await axios.get('https://stoplight.io/mocks/engine/fullstack-spec/52502230/content');
